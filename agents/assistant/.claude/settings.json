@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(./**)",
+      "Edit(./memory/**)",
+      "Edit(./knowledge/**)",
+      "Write(./memory/**)",
+      "Write(./knowledge/**)"
+    ]
+  }
+}
