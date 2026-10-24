@@ -1,5 +1,7 @@
 {
-  "enabledMcpjsonServers": ["todoist"],
+  "enabledMcpjsonServers": [
+    "todoist"
+  ],
   "permissions": {
     "allow": [
       "Read(./**)",
@@ -21,7 +23,20 @@
       "mcp__todoist__update-sections",
       "mcp__todoist__add-comments",
       "mcp__todoist__update-comments",
-      "mcp__todoist__manage-assignments"
+      "mcp__todoist__manage-assignments",
+      "mcp__todoist__add-filters",
+      "mcp__todoist__update-filters",
+      "mcp__todoist__add-labels",
+      "mcp__todoist__update-labels",
+      "mcp__todoist__add-reminders",
+      "mcp__todoist__update-reminders",
+      "mcp__todoist__reschedule-tasks",
+      "mcp__todoist__uncomplete-tasks",
+      "mcp__todoist__reorder-objects",
+      "mcp__todoist__project-management",
+      "mcp__todoist__project-move",
+      "mcp__todoist__import-project-template",
+      "mcp__todoist__analyze-project-health"
     ]
   }
 }
