@@ -3,7 +3,7 @@
 ## В базе (конспекты)
 - Kohavi, Deng, Longbotham, Xu. *Seven Rules of Thumb for Web Site Experimenters.* KDD 2014 — `papers/2014-seven-rules-of-thumb.md`
 - Kohavi, Deng, Vermeer. *A/B Testing Intuition Busters.* KDD 2022 — `papers/2022-intuition-busters.md`
-- Kohavi, Tang, Xu. *Trustworthy Online Controlled Experiments.* Cambridge UP, 2020 — `book/trustworthy-online-controlled-experiments.md` (обзор по главам)
+- Kohavi, Tang, Xu. *Trustworthy Online Controlled Experiments.* Cambridge UP, 2020 — `book/00-map.md` … `book/10-alternatives.md` (конспекты по полному тексту); текст по главам — `pdf/book-text/` (локально)
 
 ## Стоит добавить (через `learn`)
 - Kohavi et al. *Controlled experiments on the web: survey and practical guide.* DMKD 2009 — http://bit.ly/expSurvey

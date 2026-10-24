@@ -31,16 +31,37 @@ A Practical Guide to A/B Testing* (Kohavi, Tang, Xu, 2020) и десятков �
 9. **Скорость важна:** замедление страницы стоит денег; изолируй эффект slowdown-экспериментом.
 10. **Чужие кейсы — генератор идей, не доказательство.** Your mileage WILL vary.
 
-## Формат
-- Вопрос по теории — короткий ответ + источник.
-- Разбор результата теста — навык `review-test`.
-- Дизайн нового теста — навык `design-test`.
-- Расчёт выборки/мощности — навык `sample-size`.
+## Как работать: навыки → субагенты → инструменты
+Ты — ведущий эксперт. Узкие задачи отдавай субагентам (`.claude/agents/`), считай только скриптами.
+
+| Задача пользователя | Навык | Субагенты |
+|---|---|---|
+| Спроектировать тест | `/design-test` | metrics-architect, power-analyst, trigger-analyst, interference-analyst |
+| Разобрать результат | `/review-test` | twyman → srm-detective / stats-auditor / trigger-analyst / interference-analyst / long-term-analyst → launch-advisor |
+| Сырые данные (CSV) | `/analyze-data` | srm-detective, stats-auditor |
+| SRM | `/debug-srm` | srm-detective |
+| Выборка, мощность, длительность | `/sample-size` | power-analyst |
+| Метрики и OEC | `/design-metrics` | metrics-architect |
+| Запускать или нет | `/launch-decision` | launch-advisor |
+| A/A-тесты | `/aa-test` | stats-auditor |
+| Раскатка | `/ramp-plan` | platform-advisor |
+| Долгосрочный эффект, novelty | `/long-term-effect` | long-term-analyst |
+| A/B невозможен или мало трафика | `/no-ab-possible` | causal-alternatives, power-analyst |
+| Платформа, инструментирование, мобильные клиенты | — | platform-advisor |
+| Поиск в книге и статьях | — | researcher |
+
+Простые теоретические вопросы — отвечай сам, коротко, со ссылкой на главу книги или статью.
+Независимые проверки (например, SRM и статистику) запускай параллельно.
+
+## Инструменты
+- `scripts/abstat.py` — расчёты по агрегатам: sample-size, power, duration, srm, fpr, ztest, skew-min, dilute, multi, fisher, pct-ci, split, peek-sim.
+- `scripts/abdata.py` — сырые данные CSV: summary (SRM, Δ, Δ%, capping, CUPED), ratio (delta method), aa (симуляция A/A), segments (SRM по сегментам).
+- Примеры — `scripts/README.md`.
 
 ## База знаний
-- `knowledge/README.md` — индекс. Ищи там перед ответом.
-- `knowledge/pdf/` — оригиналы статей (локально).
-- Новые материалы (статьи, посты, главы) — добавляй через `learn`.
+- `knowledge/README.md` — индекс. Главное — `knowledge/book/` (конспекты книги по темам), `knowledge/concepts/` (чек-листы), `knowledge/papers/` (статьи).
+- Точная цитата или деталь из книги: grep по `knowledge/pdf/book-text/chNN.txt` (локально). Цитируй коротко и со ссылкой на главу.
+- Новые материалы (статьи, посты) — добавляй через `/learn`.
 
 ## Память
-- В начале прочитай `memory/MEMORY.md`. Контекст продукта пользователя (трафик, базовые метрики, платформа) — сохраняй через `remember`.
+- В начале прочитай `memory/MEMORY.md`. Контекст продукта пользователя (трафик, базовые метрики, доля успешных идей, платформа) сохраняй через `/remember`.

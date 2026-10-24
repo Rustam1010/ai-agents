@@ -9,6 +9,12 @@
   ztest        сравнение конверсий двух групп: lift, CI, p-value
   skew-min     минимальная выборка для асимметричной метрики (правило 355·s²)
   duration     сколько дней нужно при заданном трафике
+  dilute       разбавить эффект триггерной популяции на всю аудиторию (гл. 20)
+  multi        множественные проверки: P(ложная значимость), Bonferroni, Benjamini-Hochberg, tiered
+  fisher       объединить p-values независимых реплик (мета-анализ Фишера, гл. 17)
+  pct-ci       CI для относительной разницы Δ% по delta method (гл. 18)
+  split        эффективность неравного сплита относительно MPR 50/50 (гл. 15)
+  peek-sim     симуляция: во сколько раз peeking завышает ложные срабатывания (гл. 3)
 Примеры — в scripts/README.md.
 """
 import argparse
@@ -152,6 +158,106 @@ def cmd_duration(a):
     print("Минимум неделя (лучше две) — из-за недельной сезонности и novelty-эффектов.")
 
 
+def cmd_dilute(a):
+    d_abs = a.trig_delta
+    overall_total = a.overall_mean * a.overall_n
+    diluted = d_abs * a.trig_n / overall_total
+    tau = a.trig_n / a.overall_n
+    print(f"Триггерных: {a.trig_n:,} из {a.overall_n:,} (τ = {tau:.2%})")
+    print(f"Разбавленный (site-wide) эффект: {diluted:+.4%}  = Δθ·Nθ / (M_ωC·N_ω)")
+    if a.trig_mean:
+        naive = d_abs / a.trig_mean * tau
+        print(f"Эффект на триггерных: {d_abs / a.trig_mean:+.3%}; наивное δθ·τ = {naive:+.4%}"
+              f" (верно только если триггерные — случайная выборка; ошибка в {a.overall_mean / a.trig_mean:.2f} раза)")
+
+
+def bh(pvals, q):
+    m = len(pvals)
+    order = sorted(range(m), key=lambda i: pvals[i])
+    k_max = 0
+    for rank, i in enumerate(order, 1):
+        if pvals[i] <= rank / m * q:
+            k_max = rank
+    return {order[r] for r in range(k_max)}
+
+
+def cmd_multi(a):
+    if a.k:
+        prob = 1 - (1 - a.alpha) ** a.k
+        print(f"{a.k} независимых метрик при α={a.alpha}: P(≥1 ложно значимой) = {prob:.1%}; ожидается {a.k * a.alpha:.1f} ложных")
+        print(f"Bonferroni: порог α/k = {a.alpha / a.k:.5f}")
+    if a.pvalues:
+        m = len(a.pvalues)
+        rej = bh(a.pvalues, a.alpha)
+        print(f"Benjamini-Hochberg (FDR {a.alpha}) по {m} p-values:")
+        for i, pv in enumerate(a.pvalues):
+            label = a.names[i] if a.names and i < len(a.names) else f"#{i + 1}"
+            mark = "значимо" if i in rej else "—"
+            bonf = "значимо" if pv < a.alpha / m else "—"
+            print(f"  {label:<24} p={pv:<10.4g} BH: {mark:<8} Bonferroni: {bonf}")
+    print("Tiered (Кохави, гл. 17): метрики 1-го порядка α=0.05, 2-го (каннибализация) α=0.01, 3-го (не ожидаем влияния) α=0.001")
+
+
+def cmd_fisher(a):
+    x = -2 * sum(math.log(p) for p in a.pvalues)
+    k = len(a.pvalues)
+    p = chi2_sf(x, 2 * k)
+    print(f"Fisher: X = −2Σln(p) = {x:.3f}, df = {2 * k}, объединённый p-value = {p:.4g}")
+    print("Применимо к независимым тестам одной гипотезы (оригинал + ортогональная реплика).")
+
+
+def cmd_pct_ci(a):
+    se_t, se_c = a.se_t, a.se_c
+    if se_t is None:
+        se_t = a.sd_t / math.sqrt(a.n_t)
+        se_c = a.sd_c / math.sqrt(a.n_c)
+    mt, mc = a.mean_t, a.mean_c
+    pct = mt / mc - 1
+    var = se_t ** 2 / mc ** 2 + mt ** 2 * se_c ** 2 / mc ** 4
+    se = math.sqrt(var)
+    zc = z(1 - a.alpha / 2)
+    naive = math.sqrt(se_t ** 2 + se_c ** 2) / mc
+    p = 2 * (1 - N.cdf(abs(pct / se)))
+    print(f"Δ% = {pct:+.3%}; {1 - a.alpha:.0%} CI: [{pct - zc * se:+.3%}, {pct + zc * se:+.3%}]; p ≈ {p:.4g}")
+    print(f"SE(Δ%) delta method = {se:.4%}; наивное var(Δ)/C̄² дало бы {naive:.4%}")
+
+
+def cmd_split(a):
+    q = a.treatment_share
+    eff = 0.25 / (q * (1 - q))
+    print(f"Treatment {q:.0%} / Control {1 - q:.0%}: дисперсия ∝ 1/(q(1−q)) — в {eff:.2f} раза больше, чем при 50/50")
+    print(f"Чтобы сохранить мощность, нужно в {eff:.2f} раза больше трафика или времени.")
+    if q < 0.5:
+        print("⚠ Неравные группы: при асимметричных метриках t-test не держит ошибку на хвостах; LRU-кеши дают фору большой группе (гл. 18, 19).")
+
+
+def cmd_peek_sim(a):
+    import random
+    rnd = random.Random(a.seed)
+    zc = z(1 - a.alpha / 2)
+    fp_end = fp_peek = 0
+    for _ in range(a.runs):
+        st = sc = 0.0
+        stt = scc = 0.0
+        n = 0
+        peeked = False
+        for day in range(1, a.days + 1):
+            for _ in range(a.users_per_day):
+                xt = rnd.random() < a.p; xc = rnd.random() < a.p
+                st += xt; sc += xc
+            n += a.users_per_day
+            pt, pc = st / n, sc / n
+            se = math.sqrt(max(pt * (1 - pt) + pc * (1 - pc), 1e-12) / n)
+            zz = (pt - pc) / se
+            if abs(zz) > zc:
+                peeked = True
+        fp_end += abs(zz) > zc
+        fp_peek += peeked
+    print(f"A/A-симуляция: {a.runs} прогонов, {a.days} дн. по {a.users_per_day} польз./группа в день, проверка каждый день")
+    print(f"Ложно значимых при одной проверке в конце: {fp_end / a.runs:.1%} (ожидается {a.alpha:.0%})")
+    print(f"Ложно значимых, если остановиться при первой значимости: {fp_peek / a.runs:.1%} — в {fp_peek / max(fp_end, 1):.1f} раза больше")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -202,6 +308,46 @@ def main():
     p.add_argument("--daily-users", type=int, required=True, help="новых уникальных пользователей в день")
     p.add_argument("--traffic-share", type=float, default=1.0, help="доля трафика в эксперименте")
     p.set_defaults(f=cmd_duration)
+
+    p = sub.add_parser("dilute")
+    p.add_argument("--trig-delta", type=float, required=True, help="абсолютная разница метрики (T−C) у триггерных")
+    p.add_argument("--trig-n", type=int, required=True, help="триггерных пользователей в группе")
+    p.add_argument("--trig-mean", type=float, help="значение метрики у триггерного контроля (для сравнения с наивным)")
+    p.add_argument("--overall-mean", type=float, required=True, help="значение метрики у всего контроля (M_ωC)")
+    p.add_argument("--overall-n", type=int, required=True, help="всех пользователей в группе")
+    p.set_defaults(f=cmd_dilute)
+
+    p = sub.add_parser("multi")
+    p.add_argument("--k", type=int, help="число метрик/сравнений")
+    p.add_argument("--pvalues", type=float, nargs="+", help="список p-values для BH/Bonferroni")
+    p.add_argument("--names", nargs="+", help="имена метрик в том же порядке")
+    p.add_argument("--alpha", type=float, default=0.05)
+    p.set_defaults(f=cmd_multi)
+
+    p = sub.add_parser("fisher")
+    p.add_argument("--pvalues", type=float, nargs="+", required=True)
+    p.set_defaults(f=cmd_fisher)
+
+    p = sub.add_parser("pct-ci")
+    p.add_argument("--mean-t", type=float, required=True); p.add_argument("--mean-c", type=float, required=True)
+    p.add_argument("--se-t", type=float); p.add_argument("--se-c", type=float)
+    p.add_argument("--sd-t", type=float); p.add_argument("--sd-c", type=float)
+    p.add_argument("--n-t", type=int); p.add_argument("--n-c", type=int)
+    p.add_argument("--alpha", type=float, default=0.05)
+    p.set_defaults(f=cmd_pct_ci)
+
+    p = sub.add_parser("split")
+    p.add_argument("--treatment-share", type=float, required=True, help="доля Treatment в эксперименте (0.1 = 10/90)")
+    p.set_defaults(f=cmd_split)
+
+    p = sub.add_parser("peek-sim")
+    p.add_argument("--runs", type=int, default=500)
+    p.add_argument("--days", type=int, default=14)
+    p.add_argument("--users-per-day", type=int, default=500)
+    p.add_argument("--p", type=float, default=0.05)
+    p.add_argument("--alpha", type=float, default=0.05)
+    p.add_argument("--seed", type=int, default=1)
+    p.set_defaults(f=cmd_peek_sim)
 
     a = ap.parse_args()
     a.f(a)

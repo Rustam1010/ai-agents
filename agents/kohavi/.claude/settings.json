@@ -5,7 +5,11 @@
       "Edit(./memory/**)",
       "Edit(./knowledge/**)",
       "Bash(python3 scripts/abstat.py:*)",
-      "Bash(python3 scripts/abstat.py *)"
+      "Bash(python3 scripts/abstat.py *)",
+      "Bash(python3 scripts/abdata.py:*)",
+      "Bash(python3 scripts/abdata.py *)",
+      "Bash(head:*)",
+      "Read(./knowledge/pdf/**)"
     ]
   }
 }
