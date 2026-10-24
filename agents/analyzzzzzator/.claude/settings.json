@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(./**)",
+      "Edit(./memory/**)",
+      "Edit(./knowledge/**)",
+      "Bash(python3 scripts/nhl.py:*)",
+      "Bash(python3 scripts/nhl.py *)",
+      "Bash(sqlite3 data/nhl.sqlite:*)",
+      "WebSearch",
+      "Edit(./data/bets.csv)"
+    ]
+  }
+}
