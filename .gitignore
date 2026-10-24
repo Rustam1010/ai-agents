@@ -9,3 +9,6 @@ __pycache__/
 # Сводки агентов содержат личную переписку — только локально
 agents/*/digests/*
 !agents/*/digests/.gitkeep
+
+# PDF-оригиналы статей — только локально (авторские права)
+agents/*/knowledge/pdf/

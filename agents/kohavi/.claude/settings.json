@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(./**)",
+      "Edit(./memory/**)",
+      "Edit(./knowledge/**)",
+      "Bash(python3 scripts/abstat.py:*)",
+      "Bash(python3 scripts/abstat.py *)"
+    ]
+  }
+}

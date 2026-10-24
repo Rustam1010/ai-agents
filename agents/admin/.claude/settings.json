@@ -7,10 +7,7 @@
       "Read(./**)",
       "Edit(./memory/**)",
       "Edit(./knowledge/**)",
-      "Edit(./digests/**)",
-      "Write(./memory/**)",
-      "Write(./knowledge/**)",
-      "Write(./digests/**)"
+      "Edit(./digests/**)"
     ],
     "deny": [
       "mcp__todoist__add-tasks",
