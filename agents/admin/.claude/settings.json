@@ -1,0 +1,27 @@
+{
+  "enabledMcpjsonServers": ["todoist"],
+  "permissions": {
+    "allow": [
+      "Read(./**)",
+      "Edit(./memory/**)",
+      "Edit(./knowledge/**)",
+      "Edit(./digests/**)",
+      "Write(./memory/**)",
+      "Write(./knowledge/**)",
+      "Write(./digests/**)"
+    ],
+    "deny": [
+      "mcp__todoist__add-tasks",
+      "mcp__todoist__update-tasks",
+      "mcp__todoist__complete-tasks",
+      "mcp__todoist__delete-object",
+      "mcp__todoist__add-projects",
+      "mcp__todoist__update-projects",
+      "mcp__todoist__add-sections",
+      "mcp__todoist__update-sections",
+      "mcp__todoist__add-comments",
+      "mcp__todoist__update-comments",
+      "mcp__todoist__manage-assignments"
+    ]
+  }
+}

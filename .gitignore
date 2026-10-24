@@ -5,3 +5,7 @@
 node_modules/
 __pycache__/
 .venv/
+
+# Сводки агентов содержат личную переписку — только локально
+agents/*/digests/*
+!agents/*/digests/.gitkeep
