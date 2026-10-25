@@ -8,7 +8,10 @@
       "Bash(python3 scripts/nhl.py *)",
       "Bash(sqlite3 data/nhl.sqlite:*)",
       "WebSearch",
-      "Edit(./data/bets.csv)"
+      "Edit(./data/bets.csv)",
+      "Bash(bb thread update --self:*)",
+      "Bash(bb thread show:*)",
+      "Bash(bb status:*)"
     ]
   }
 }
