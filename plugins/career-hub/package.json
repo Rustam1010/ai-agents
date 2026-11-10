@@ -1,0 +1,83 @@
+{
+  "name": "bb-plugin-career-hub",
+  "version": "0.2.1",
+  "type": "module",
+  "engines": {
+    "bb": ">=0.48",
+    "bbPluginSdk": ">=0.6.104"
+  },
+  "bb": {
+    "name": "Career Hub",
+    "description": "Keep every application and its tailored CV in one place.",
+    "branding": {
+      "icon": "./assets/icon.svg"
+    },
+    "server": "./server.ts",
+    "app": "./app.tsx"
+  },
+  "dependencies": {
+    "fflate": "0.8.3",
+    "pdfkit": "0.17.2",
+    "unpdf": "1.4.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@get-bb/plugin-sdk": "0.6.104",
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "better-sqlite3": "12.10.0",
+    "cron-parser": "5.5.0",
+    "hono": "4.13.17",
+    "tsx": "4.20.6",
+    "typescript": "^5.7.0"
+  },
+  "scripts": {
+    "build": "node generate-frame.mjs && bb plugin build",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts"
+  },
+  "author": "Rustambek Umarov",
+  "license": "MIT",
+  "homepage": "https://github.com/Rustam1010/ai-agents/tree/main/plugins/career-hub",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rustam1010/ai-agents.git",
+    "directory": "plugins/career-hub"
+  },
+  "bugs": {
+    "url": "https://github.com/Rustam1010/ai-agents/issues"
+  },
+  "keywords": [
+    "bb-plugin",
+    "job-search",
+    "cv",
+    "resume",
+    "interview-prep"
+  ],
+  "files": [
+    "dist/",
+    "assets/",
+    "skills/",
+    "server.ts",
+    "app.tsx",
+    "contract.ts",
+    "model.ts",
+    "career-actions.ts",
+    "parser.ts",
+    "import-worker.cjs",
+    "frame.generated.ts",
+    "frame-addon.js",
+    "ui.html",
+    "generate-frame.mjs",
+    "tsconfig.json",
+    "tests/",
+    "README.md",
+    "PLUGIN_OVERVIEW.md",
+    "PRIVACY.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "screenshots/"
+  ]
+}

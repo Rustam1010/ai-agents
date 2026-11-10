@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Career Hub</title>
+<style>
+:root{--ink:var(--foreground,#192d2a);--dim:var(--muted-foreground,#64746f);--line:var(--border,#dce5df);--panel:var(--card,#fff);--soft:var(--surface-recessed,#f3f6f3);--raised:var(--surface-raised,#f8faf8);--green:var(--brand,#176653);--on-green:var(--primary-foreground,#fff);--r:var(--radius,12px)}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font:14px/1.5 var(--font-sans,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);background:transparent}
+button,input,textarea,select{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.5}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--green);outline-offset:3px}
+h1,h2,h3,p{margin:0}h1{font-size:23px;letter-spacing:-.8px}h2{font-size:21px;letter-spacing:-.6px;line-height:1.25}h3{font-size:15px;line-height:1.4}small,.small{font-size:12px}
+svg.icon{width:17px;height:17px;flex:none;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.muted{color:var(--dim)}.eyebrow{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;font-weight:700;color:var(--dim)}
+.row{display:flex;align-items:center;gap:9px}.spread{justify-content:space-between}.wrap{flex-wrap:wrap}.stack{display:flex;flex-direction:column;gap:14px}.gap6{gap:6px}.mt{margin-top:16px}.mb{margin-bottom:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink);font-weight:600;font-size:12px;text-decoration:none}
+.btn:hover{background:var(--soft)}.btn.primary{background:var(--green);color:var(--on-green);border-color:transparent}.btn.primary:hover{filter:brightness(1.08)}
+.btn.quiet{background:transparent;border-color:transparent}.btn.tiny{min-height:28px;padding:3px 8px;font-size:11px}
+.chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:5px;padding:2px 7px;font-size:10px;font-weight:600;color:var(--dim);background:var(--panel)}
+.chip.green{color:var(--green);background:color-mix(in srgb,var(--green) 7%,var(--panel));border-color:color-mix(in srgb,var(--green) 24%,var(--line))}
+.chip.amber{color:var(--warning-text,#926522);background:color-mix(in srgb,var(--warning,#d49a3c) 8%,var(--panel))}
+.tag{font-size:10px;color:var(--dim);background:var(--soft);border-radius:4px;padding:3px 6px}
+.surface{padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}.surface.soft{background:var(--soft)}
+.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin:24px 0 17px}.heading p{color:var(--dim);margin-top:7px;font-size:12px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.brandmark{background:var(--green);color:var(--on-green);width:34px;height:34px;display:grid;place-items:center;border-radius:10px}.brandmark svg{width:21px;height:21px}
+.top{padding:5px 0 18px;border-bottom:1px solid var(--line)}.top .eyebrow{letter-spacing:.7px}.demo{font-size:11px;color:var(--dim);padding-top:8px}
+.tabs{display:flex;gap:2px;overflow:auto;border-bottom:1px solid var(--line);padding:12px 0 0;scrollbar-width:thin}
+.tab{background:transparent;border:0;color:var(--dim);font-weight:600;font-size:12px;display:flex;gap:6px;align-items:center;padding:12px 10px;border-bottom:2px solid transparent;white-space:nowrap}
+.tab[aria-current=page]{color:var(--green);border-bottom-color:var(--green)}.tab:hover{color:var(--ink)}.tabs .icon{width:15px;height:15px}
+.number{font-size:27px;font-weight:500;line-height:1.1;letter-spacing:-1px;margin:8px 0}.stat{border-left:2px solid var(--line);padding-left:15px}.stat:first-child{border-color:var(--green)}
+.stats{padding:18px 0 4px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.feature{padding:24px;background:color-mix(in srgb,var(--green) 6%,var(--panel));border:1px solid color-mix(in srgb,var(--green) 24%,var(--line));border-radius:var(--r)}
+.feature h2{margin:12px 0 6px;max-width:420px;font-size:25px}.feature p{color:var(--dim);font-size:12px;max-width:430px}.feature .btn{margin-top:18px}
+.task{padding:13px 0;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);align-items:center}.task:last-child{border-bottom:0;padding-bottom:0}
+.datebox{display:flex;flex-direction:column;align-items:center;min-width:37px;border:1px solid var(--line);border-radius:6px;padding:3px 6px;background:var(--raised);font-size:9px;color:var(--dim)}.datebox strong{font-size:17px;color:var(--ink)}
+.task-title{font-size:12px;font-weight:650}.task p{font-size:11px;color:var(--dim);margin-top:2px}.task-body{display:flex;gap:12px;align-items:center;min-width:0}
+.toolbar{display:flex;gap:8px;justify-content:space-between;align-items:center;margin:15px 0;flex-wrap:wrap}
+.search{position:relative;flex:1;min-width:130px}.search .icon{position:absolute;top:10px;left:10px;color:var(--dim)}
+input[type=text],input[type=date],textarea,select{color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:9px 10px;max-width:100%;width:100%;font-size:12px}
+.search input{padding-left:34px}select{width:auto;min-height:36px}textarea{resize:vertical;min-height:95px;line-height:1.5}
+label.field{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.column{padding:12px;background:var(--soft);border-radius:var(--r);min-width:0}
+.colhead{font-size:11px;font-weight:700;display:flex;justify-content:space-between;gap:4px;margin-bottom:12px}
+.job{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;display:block;width:100%;text-align:left;color:var(--ink);margin-bottom:9px;overflow-wrap:anywhere}
+.job:hover,.job.active{border-color:var(--green)}.job .company{font-size:9px;color:var(--dim);display:block;margin-bottom:7px}
+.job strong{display:block;font-size:12px;line-height:1.4}.job small{font-size:10px;display:block;margin:9px 0;color:var(--dim)}.job .chip{font-size:9px;max-width:100%}
+.listjobs{display:grid;gap:8px}.listjobs .job{margin:0;display:flex;align-items:center;justify-content:space-between;gap:12px}.listjobs .job strong{margin-top:3px}
+.detail{margin-top:18px;border-top:2px solid var(--green)}.detail h2{font-size:19px}.detail .desc{font-size:12px;color:var(--dim);margin:10px 0 16px}
+.timeline{list-style:none;margin:0;padding:0}.timeline li{position:relative;padding:0 0 18px 18px;border-left:1px solid var(--line);font-size:12px;overflow-wrap:anywhere}
+.timeline li:before{content:"";position:absolute;width:7px;height:7px;left:-4px;top:6px;border-radius:50%;background:var(--green)}.timeline li:last-child{padding-bottom:0}
+.timeline small{display:block;color:var(--dim);font-size:10px;margin-bottom:3px}.hint{font-size:11px;color:var(--dim);line-height:1.6}
+.story{padding:17px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow-wrap:anywhere}
+.story p{font-size:12px;color:var(--dim);margin:8px 0 12px}.story details{margin-top:12px;border-top:1px solid var(--line);padding-top:10px;font-size:12px}
+.story summary{font-size:11px;cursor:pointer;color:var(--green);font-weight:600}
+.story dl{margin:12px 0 0;display:grid;grid-template-columns:75px minmax(0,1fr);gap:8px;font-size:11px}.story dt{color:var(--dim)}.story dd{margin:0}
+.profile{padding:18px 20px;background:var(--soft);border-radius:var(--r);margin-bottom:16px}
+.avatar{width:38px;height:38px;flex:none;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;border-radius:50%;font-weight:650;font-size:12px}
+.resume-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:16px;align-items:start}
+.sectionlabel{font-size:12px;font-weight:700;margin:0 0 10px}.requirement{border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:8px;background:var(--panel)}
+.requirement .quote{font-size:11px;color:var(--dim);margin:5px 0 8px}.requirement h3{font-size:12px}.coverage{font-size:10px;font-weight:650;color:var(--green)}.coverage.gap{color:var(--warning-text,#926522)}
+.pick{display:flex;gap:9px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.pick input{accent-color:var(--green);margin:4px 0 0;flex:none;width:15px;height:15px}.pick strong{font-size:11px;display:block}.pick small{font-size:10px;color:var(--dim);display:block;margin-top:3px}.pick.disabled{opacity:.55;cursor:default}
+.paper{padding:24px 22px;background:var(--panel);border:1px solid var(--line);border-radius:3px;box-shadow:0 3px 16px #00000005}
+.paper .resume-name{font-size:20px;font-weight:650;letter-spacing:-.7px;margin-bottom:3px}.paper .resume-title{font-size:11px;color:var(--green);font-weight:600;margin-bottom:12px}
+.paper .resume-contact{font-size:9px;color:var(--dim);padding-bottom:13px;border-bottom:1px solid var(--line);margin-bottom:13px}
+.paper h3{font-size:10px;letter-spacing:1px;text-transform:uppercase;margin:16px 0 8px}.paper p,.paper li{font-size:10px;line-height:1.7}
+.paper ul{padding-left:14px;margin:7px 0}.paper .employment{font-size:11px;font-weight:650}.paper .period{font-size:9px;color:var(--dim)}
+.source-link{border:0;padding:0 2px;color:var(--green);background:transparent;font-size:8px;vertical-align:super;cursor:pointer}
+.version{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:9px 0;gap:9px}.version:last-child{border:0}.version p{font-size:11px;font-weight:600}.version small{font-size:10px;color:var(--dim)}
+.star{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.star:last-child{border:0}
+.letter{width:27px;height:27px;border-radius:7px;display:grid;place-items:center;background:color-mix(in srgb,var(--green) 8%,var(--panel));color:var(--green);font-size:11px;font-weight:700}
+.star p{font-size:12px}.star .eyebrow{font-size:9px;margin-bottom:3px}.empty{padding:22px;text-align:center;font-size:12px;color:var(--dim);border:1px dashed var(--line);border-radius:9px}
+.count{font-size:10px;background:var(--panel);border-radius:4px;padding:0 5px;color:var(--dim)}.footer{font-size:10px;color:var(--dim);padding:20px 0 5px;border-top:1px solid var(--line);margin-top:24px}.footer span{display:block;margin-top:3px}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);max-width:92%;padding:12px 17px;background:var(--ink);color:var(--panel);border-radius:9px;font-size:12px;z-index:20;pointer-events:none;box-shadow:var(--shadow-md,0 5px 20px #0002)}#toast:empty{display:none}
+dialog{border:1px solid var(--line);border-radius:var(--r);padding:24px;width:540px;max-width:94%;max-height:min(650px,calc(100dvh - 24px));overflow:auto;background:var(--panel);color:var(--ink);box-shadow:var(--shadow-lg,0 14px 50px #0002)}
+dialog::backdrop{background:#0e242855}dialog h2{font-size:19px;margin-bottom:8px}dialog form{display:flex;flex-direction:column;gap:13px}
+dialog .modal-close{position:absolute;top:12px;right:12px}dialog textarea.document{font-family:var(--font-mono,monospace);font-size:11px;min-height:300px}
+#screen{min-height:620px}.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+*[hidden]{display:none!important}
+.job h3{font-size:12px}.job-actions{margin-top:12px}.job-actions .btn{font-size:10px;padding:3px 6px}
+.listjobs .job{display:block}.listjobs .job .company{font-size:11px}.listjobs .job h3{font-size:15px}
+.source-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.source-card{padding:17px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);overflow-wrap:anywhere}
+.source-card h3{font-size:13px;margin-top:13px}.source-card .hint{margin-top:8px}.dropzone{border-style:dashed;border-color:var(--green)}
+.machine-review{border-color:color-mix(in srgb,var(--green) 30%,var(--line));background:color-mix(in srgb,var(--green) 4%,var(--panel))}
+.screening-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.screening-grid strong{font-size:11px;display:block}.screening-grid p{font-size:11px;color:var(--dim);margin-top:5px}
+.requirements-fold{border:1px solid var(--line);border-radius:8px;padding:13px}
+.requirements-fold summary{font-size:12px;font-weight:650;cursor:pointer;color:var(--green)}
+.requirements-fold .requirement{margin-top:12px}.compact-story{border-bottom:1px solid var(--line);padding-bottom:7px}
+.compact-story .pick{border:0;padding-bottom:5px}.compact-story .pick strong{font-weight:500;line-height:1.6;font-size:12px}
+.merge-conflict{padding:17px;border:1px solid color-mix(in srgb,var(--warning,#d49a3c) 35%,var(--line));border-radius:9px}
+.source-text{min-height:200px}dialog h2{padding-right:24px}
+.master-cv{padding:26px;overflow-wrap:anywhere}
+.master-header{padding-bottom:20px;border-bottom:1px solid var(--line)}.master-header h2{font-size:26px}
+.master-contact{font-size:12px;color:var(--dim);margin-top:8px;white-space:pre-wrap}
+.master-section{margin-top:24px}.master-section>h3,.master-section>.row>h3{font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.master-prose{font-size:12px;line-height:1.8;white-space:pre-wrap;margin-top:10px}
+.master-employment{margin-top:20px;padding-top:17px;border-top:1px solid var(--line)}
+.master-employment h3{font-size:15px}.master-employment .period{font-size:11px;color:var(--dim);margin-top:3px}
+.master-story{margin-top:17px;padding:17px;background:var(--soft);border-radius:9px}
+.master-story h4{margin:0;font-size:13px}.master-story dl{margin:13px 0 0;display:grid;grid-template-columns:80px minmax(0,1fr);gap:9px;font-size:12px}
+.master-story dt{color:var(--dim)}.master-story dd{margin:0;white-space:pre-wrap;line-height:1.7}
+.master-source{font-size:10px;color:var(--dim);margin-top:12px}.master-skill-list{margin-top:12px}
+.master-edit-section{padding:15px;border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;gap:10px;margin:10px 0}
+#master-sections{display:flex;flex-direction:column}.master-edit-section textarea{min-height:115px}
+@media(max-width:620px){.master-cv{padding:18px}.master-story{padding:13px}.master-story dl{grid-template-columns:1fr;gap:4px}.master-story dd{margin-bottom:8px}.master-header h2{font-size:23px}}
+@media(max-width:620px){.source-grid,.screening-grid{grid-template-columns:1fr}.screening-grid{gap:12px}.job-actions .btn{font-size:11px}}
+@media(prefers-color-scheme:dark){
+ :root{--ink:var(--foreground,#e3ece6);--dim:var(--muted-foreground,#9bab9f);--line:var(--border,#344238);--panel:var(--card,#19251e);--soft:var(--surface-recessed,#142019);--raised:var(--surface-raised,#202f25);--green:var(--brand,#83cbb0);--on-green:var(--primary-foreground,#10251c)}
+ .chip.amber,.coverage.gap{color:var(--warning-text,#d8b36e)}
+}
+@media(min-width:980px){.board{gap:15px}.job{padding:16px}.resume-layout{grid-template-columns:1fr 1.1fr}.paper{padding:30px}.paper p,.paper li{font-size:12px}}
+@media(max-width:620px){.two,.resume-layout{grid-template-columns:1fr}.board{grid-template-columns:repeat(2,minmax(0,1fr))}.top .btn{padding:7px 9px}.top h1{font-size:20px}.heading{gap:10px}.heading h2{font-size:20px}.heading .btn{max-width:150px}.tab{padding:11px 9px}.stats{gap:8px}.number{font-size:24px}.stat{padding-left:9px}.stat small{font-size:10px}.feature{padding:20px}.feature h2{font-size:23px}.paper p,.paper li{font-size:12px}.paper .resume-contact{font-size:10px}.surface{padding:17px}.resume-tools{align-items:stretch}.resume-tools select{width:100%}.resume-tools .btn{flex:1}#screen{min-height:600px}.three{grid-template-columns:1fr}.datebox{min-width:35px}}
+@media(max-width:360px){.board{grid-template-columns:1fr}.top .eyebrow{font-size:9px}.tabs .icon{display:none}.top .btn .icon{display:none}.btn{font-size:11px}.heading{flex-wrap:wrap}}
+html,body{background:var(--background,#111);min-height:100%;}body{padding:16px}nav.tabs{position:sticky;top:0;z-index:3;background:var(--background,#111)}.proposal-json{white-space:pre-wrap;overflow:auto;max-height:320px;padding:14px;border:1px solid var(--line);border-radius:8px;font-size:11px}.compact-paper{padding:22px}.compact-paper p,.compact-paper li{font-size:11px;line-height:1.35}.compact-paper h3{margin-top:13px}
+</style>
+</head>
+<body>
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M7 2v4m10-4v4M3 10h18m-13 5h3m3 0h2"/></symbol>
+<symbol id="i-board" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M9 4v17m6-17v17M5 8h2m4 0h2m4 0h2M5 12h2m4 2h2"/></symbol>
+<symbol id="i-stories" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M14 3v6h6M8 13h8m-8 4h6"/></symbol>
+<symbol id="i-prepare" viewBox="0 0 24 24"><path d="M21 11a9 9 0 0 1-9 9H4l-2 2V11a9 9 0 0 1 18-4"/><path d="m9 10 3 3 8-9"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></symbol>
+</defs></svg>
+<header class="top">
+  <div class="row spread wrap">
+    <div class="row"><div class="brandmark" aria-hidden="true"><svg class="icon"><path d="M8 6V4.5A1.5 1.5 0 0 1 9.5 3h5A1.5 1.5 0 0 1 16 4.5V6"/><rect x="3" y="6" width="18" height="15" rx="2.5"/><path d="M3 11.5c5.7 2.5 12.3 2.5 18 0M10 13h4v3h-4z"/></svg></div><div><h1>Career Hub</h1><div class="eyebrow">Your next career move</div></div></div>
+    <button class="btn primary" data-action="new-job"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add job</button>
+  </div>
+  <div class="demo row spread wrap"><span id="save-status" role="status">Connecting…</span><div class="row gap6 wrap"><button class="btn tiny" data-action="export-data">Export profile JSON</button><button id="workspace-mode" class="btn tiny" data-action="workspace-mode">Open demo</button><button class="btn tiny" data-action="reload-data">Reload</button></div></div>
+</header>
+<nav class="tabs" aria-label="Career Hub sections" id="nav"></nav>
+<main id="screen" aria-live="polite"></main>
+<footer class="footer">All your experience → one shared profile → a tailored CV for every role.
+<span>Combine sources in Profile &amp; Experience. Select concise, relevant achievements in CV Builder.</span></footer>
+<dialog id="modal" aria-labelledby="modal-title"></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>const DEMO_DOCUMENT={"schemaVersion":1,"profile":{"name":"Alex Morgan","headline":"Head of Data Analytics","location":"Berlin","email":"alex@example.com","linkedin":"","meridianPeriod":"2021–2026","summary":"Data and analytics leader with experience aligning data teams, improving experimentation workflows and coordinating ML delivery.","skills":"Data team leadership\nExperimentation\nML delivery\nProduct analytics","education":"","certifications":"","languages":"","additional":"","sections":[]},"stories":[{"id":"s1","title":"Aligned three data teams","company":"Meridian","role":"Head of Data Analytics","period":"2021–2026","tags":["Leadership","Org design"],"approved":true,"focus":"data team leadership","context":"Three teams worked with different priorities and no shared planning process.","task":"Align team priorities with the goals of the product areas.","action":"Introduced shared prioritization and a regular planning cadence with team leads.","result":"Three teams adopted a shared planning cadence. Business impact was not measured.","source":"Personal note · confirmed by candidate on Nov 4, 2026","bullet":"Aligned three data teams through shared prioritization and regular planning.","sourceIds":["cv-leadership","cv-analytics"]},{"id":"s2","title":"Shortened experiment analysis turnaround","company":"Meridian","role":"Head of Data Analytics","period":"2021–2026","tags":["Experimentation","Business impact"],"approved":true,"focus":"experimentation","context":"Preparing A/B test results took 21 days on average.","task":"Speed up product decisions while maintaining analytical quality.","action":"Worked with the team to standardize calculations and the review process.","result":"Average analysis turnaround fell from 21 to 7 days over two quarters.","source":"Personal note based on an internal report · confirmed Nov 4, 2026","bullet":"Standardized experiment analysis with the team, cutting turnaround from 21 to 7 days over two quarters.","sourceIds":["cv-leadership","cv-analytics"]},{"id":"s3","title":"Brought an ML pilot into production","company":"Meridian","role":"Head of Data Analytics","period":"2021–2026","tags":["ML delivery","Stakeholders"],"approved":true,"focus":"ML product delivery","context":"A churn prediction pilot was not integrated into the CRM team workflow.","task":"Coordinate the transition from pilot to recurring use.","action":"Aligned release criteria, monitoring ownership and the workflow with the CRM and ML teams.","result":"The model became part of the recurring CRM workflow. Retention impact is unconfirmed.","source":"Personal note · confirmed by candidate on Nov 5, 2026","bullet":"Coordinated a churn model launch into CRM, with agreed release criteria and monitoring ownership.","sourceIds":["cv-leadership","cv-ml"]},{"id":"s4","title":"Rebuilt the product metrics framework","company":"Studio Nine","role":"Senior Product Analyst","period":"2017–2021","tags":["Product analytics","Metrics"],"approved":true,"focus":"product analytics","context":"Product teams used different definitions for the same metrics.","task":"Make key product metrics consistent across teams.","action":"Created a metrics dictionary and aligned definitions with product owners.","result":"A shared dictionary of key product metrics was adopted. Quantitative impact was not measured.","source":"Personal note · confirmed by candidate on Nov 5, 2026","bullet":"Created a shared product metrics dictionary and aligned definitions with product owners.","sourceIds":["cv-analytics"]},{"id":"s5","title":"Worked on an LLM prototype","company":"Meridian","role":"Head of Data Analytics","period":"2021–2026","tags":["LLM","Needs review"],"approved":false,"focus":"","context":"An earlier resume mentions an LLM project.","task":"Not established.","action":"Clarify personal responsibility, completed work and scope of involvement.","result":"Unconfirmed.","source":"Imported from an earlier resume · draft","bullet":"","sourceIds":["cv-ml"]}],"targets":{"northstar":{"company":"Northstar","role":"Director of Data & AI","requirements":[{"title":"Data team leadership","quote":"Lead multiple data teams and align their priorities.","story":"s1","level":"Must-have"},{"title":"Measurable business impact","quote":"Demonstrate impact through data-informed decisions.","story":"s2","partial":true,"note":"Partial: analysis cycle 21 → 7 days; business impact not measured","level":"Must-have"},{"title":"Production ML delivery","quote":"Own the delivery of ML initiatives into production.","story":"s3","level":"Must-have"},{"title":"LLM product experience","quote":"Experience with LLM products is a plus.","story":null,"level":"Nice-to-have"}]},"morrow":{"company":"Morrow Labs","role":"Head of Analytics","requirements":[{"title":"Product metrics","quote":"Establish a shared product metrics framework.","story":"s4","level":"Must-have"},{"title":"Experimentation practice","quote":"Build a reliable experimentation practice.","story":"s2","level":"Must-have"},{"title":"Analytics leadership","quote":"Align analytics teams with product priorities.","story":"s1","level":"Must-have"}]}},"sources":[{"id":"cv-leadership","type":"cv","name":"Leadership_CV.pdf","status":"Reviewed","note":"Leadership and delivery experience","storyIds":["s1","s2","s3"]},{"id":"cv-analytics","type":"cv","name":"Analytics_CV.docx","status":"Reviewed","note":"Product metrics and experimentation","storyIds":["s1","s2","s4"]},{"id":"cv-ml","type":"cv","name":"ML_Leadership_CV.pdf","status":"Needs review","note":"1 date conflict · 1 additional story","storyIds":["s3","s5"],"conflict":true,"pendingStory":{"id":"imported-intake","title":"Standardized stakeholder intake","company":"Meridian","role":"Head of Data Analytics","period":"2021–2026","tags":["Stakeholders"],"focus":"stakeholder alignment","context":"Teams received requests through different channels.","task":"Make incoming analytics work visible and comparable.","action":"Introduced a shared intake process with product partners.","result":"Requests were reviewed through one shared process. Quantitative impact was not measured.","bullet":"Introduced a shared analytics intake process with product partners.","approved":false,"source":"ML leadership CV · imported candidate","sourceIds":["cv-ml"]}}],"jobs":[{"id":"northstar","company":"Northstar","role":"Director of Data & AI","location":"Berlin · Hybrid","status":"interview","next":"Leadership · Nov 12","applied":true,"outcome":"","events":[{"at":"Nov 6","text":"Applied through the company website. CV v1 sent."},{"at":"Nov 8","text":"Recruiter screening completed. Recorded by candidate."},{"at":"Nov 9","text":"Leadership interview scheduled for Nov 12 at 14:00 CET."}]},{"id":"morrow","company":"Morrow Labs","role":"Head of Analytics","location":"Remote · Europe","status":"prep","next":"Prepare CV","applied":false,"outcome":"","events":[{"at":"Nov 9","text":"Job saved. Requirements reviewed."}]},{"id":"orbit","company":"Orbit Commerce","role":"Lead Data Scientist","location":"Berlin · Hybrid","status":"applied","next":"Follow-up · Nov 13","applied":true,"outcome":"","events":[{"at":"Nov 6","text":"Applied through the company website. No response yet."}]},{"id":"daylight","company":"Daylight","role":"Analytics Manager","location":"Remote · Germany","status":"closed","next":"Rejected by company","applied":true,"outcome":"Rejected by company","events":[{"at":"Nov 1","text":"Application submitted."},{"at":"Nov 7","text":"Rejected after screening. No reason provided."}]}],"versions":[{"id":"v1","number":1,"target":"northstar","label":"v1 · Nov 6","text":"ALEX MORGAN\nTarget role: Director of Data & AI\nBerlin · alex@example.com\n\nPROFILE\nHead of Data Analytics with experience in data team leadership, experimentation.\n\nEXPERIENCE\nMeridian · Head of Data Analytics · 2021–2026\n• Aligned three data teams through shared prioritization and regular planning.\n• Standardized experiment analysis with the team, cutting turnaround from 21 to 7 days over two quarters.","stories":[{"id":"s1","title":"Aligned three data teams","company":"Meridian","role":"Head of Data Analytics","period":"2021–2026","tags":["Leadership","Org design"],"approved":true,"focus":"data team leadership","context":"Three teams worked with different priorities and no shared planning process.","task":"Align team priorities with the goals of the product areas.","action":"Introduced shared prioritization and a regular planning cadence with team leads.","result":"Three teams adopted a shared planning cadence. Business impact was not measured.","source":"Personal note · confirmed by candidate on Nov 4, 2026","bullet":"Aligned three data teams through shared prioritization and regular planning.","sourceIds":["cv-leadership","cv-analytics"]},{"id":"s2","title":"Shortened experiment analysis turnaround","company":"Meridian","role":"Head of Data Analytics","period":"2021–2026","tags":["Experimentation","Business impact"],"approved":true,"focus":"experimentation","context":"Preparing A/B test results took 21 days on average.","task":"Speed up product decisions while maintaining analytical quality.","action":"Worked with the team to standardize calculations and the review process.","result":"Average analysis turnaround fell from 21 to 7 days over two quarters.","source":"Personal note based on an internal report · confirmed Nov 4, 2026","bullet":"Standardized experiment analysis with the team, cutting turnaround from 21 to 7 days over two quarters.","sourceIds":["cv-leadership","cv-analytics"]}],"sent":true}],"caseLinks":{},"cvWording":{},"savedNotes":[],"selections":{"northstar":["s1","s2","s3"]}};
+
+"use strict";
+const $=(s,root=document)=>root.querySelector(s);
+const esc=v=>String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const icon=n=>'<svg class="icon" aria-hidden="true"><use href="#i-'+n+'"/></svg>';
+const chip=(text,kind="")=>'<span class="chip '+kind+'">'+esc(text)+'</span>';
+const btn=(label,action,klass="",extra="")=>'<button class="btn '+klass+'" data-action="'+action+'" '+extra+'>'+label+'</button>';
+const pages=[["jobs","board","Jobs"],["stories","stories","Profile & Experience"],["resume","doc","CV Builder"],["prep","prepare","Interview prep"]];
+const stories=[];
+const targets={};
+
+const profile={name:'',headline:'',location:'',email:'',linkedin:'',meridianPeriod:'',summary:'',skills:'',education:'',certifications:'',languages:'',additional:'',sections:[]};
+const importCandidate={id:"imported-intake",title:"Standardized stakeholder intake",company:"Meridian",role:"Head of Data Analytics",period:"2021–2026",tags:["Stakeholders"],focus:"stakeholder alignment",context:"Teams received requests through different channels.",task:"Make incoming analytics work visible and comparable.",action:"Introduced a shared intake process with product partners.",result:"Requests were reviewed through one shared process. Quantitative impact was not measured.",bullet:"Introduced a shared analytics intake process with product partners.",approved:false,source:"ML leadership CV · imported candidate",sourceIds:["cv-ml"]};
+let serial=0;
+const uid=prefix=>prefix+"-"+Date.now()+"-"+(++serial);
+const state={view:'stories',target:'',selected:new Set(),filter:'all',experienceTab:'master',jobQuery:'',jobLayout:'board',showClosed:false,prepQuestion:0,prepNote:'',versions:[],savedNotes:[],caseLinks:{},cvWording:{},sources:[],jobs:[]};
+const statusNames={saved:"Saved",prep:"Preparing",applied:"Applied",screen:"Screening",interview:"Interview",offer:"Offer",closed:"Closed"};
+const questions=[
+ {title:"How did you align priorities across teams?",story:"s1",hint:"Explain your own role, the disagreements and how decisions were made."},
+ {title:"How did you assess the impact of your analytics process changes?",story:"s2",hint:"Explain the original process, the outcome metric and measurement limits."},
+ {title:"What did it take to bring the ML pilot into production?",story:"s3",hint:"Separate your leadership contribution from the work of the ML team."}
+];
+function sentenceCount(text){
+ if(!text.trim())return 0;
+ if(typeof Intl.Segmenter==="function")return Array.from(new Intl.Segmenter("en",{granularity:"sentence"}).segment(text)).filter(s=>s.segment.trim()).length;
+ return text.trim().split(/[.!?]+\s+/).filter(Boolean).length;
+}
+function compact(s){return ((state.cvWording[state.target]||{})[s.id]||s.bullet).trim()}
+function sourceLabel(source){return {cv:"CV",linkedin:"LinkedIn",prep:"Interview case",manual:"Manual"}[source.type]||"Source"}
+function validCompact(s){return compact(s).length>0&&sentenceCount(compact(s))<=2}
+function picked(){return stories.filter(s=>state.selected.has(s.id)&&s.approved)}
+function target(){return targets[state.target]||{company:"",role:"",requirements:[]}}
+function groupsFor(selection){
+ const groups=new Map();
+ selection.forEach(s=>{const key=s.company+" · "+s.role+" · "+s.period;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(s)});
+ return Array.from(groups.entries());
+}
+function cvText(selection=picked(),t=target()){
+ const focus=Array.from(new Set(selection.map(s=>s.focus).filter(Boolean)));
+ let text=profile.name.toUpperCase()+"\nTarget role: "+t.role+"\n"+profile.location+" · "+profile.email+(profile.linkedin?" · "+profile.linkedin:"")+"\n\nPROFILE\n";
+ text+=profile.headline+(focus.length?" with experience in "+focus.join(", ")+".":".");
+ text+="\n\nEXPERIENCE\n";
+ groupsFor(selection).forEach(([key,items])=>{text+=key+"\n"+items.map(s=>"• "+compact(s)).join("\n")+"\n\n"});
+ return text.trim();
+}
+function heading(title,sub,action=""){return '<div class="heading"><div><h2>'+title+'</h2><p>'+sub+'</p></div>'+action+'</div>'}
+function go(view){state.view=view;render()}
+function render(){
+ $("#nav").innerHTML=pages.map(([id,ic,label])=>'<button class="tab" data-view="'+id+'" '+(state.view===id?'aria-current="page"':'')+'>'+icon(ic)+esc(label)+'</button>').join("");
+ $("#screen").innerHTML=({jobs:renderJobs,stories:renderExperience,resume:renderBuilder,prep:renderPrep})[state.view]();
+}
+function jobCard(j){
+ return '<article class="job"><span class="company">'+esc(j.company)+'</span><h3>'+esc(j.role)+'</h3><small>'+esc(j.location)+'</small>'+chip(j.status==="closed"?j.outcome:statusNames[j.status],j.status==="interview"?"green":"")+'<small>'+esc(j.next)+'</small><div class="row wrap gap6 job-actions">'+btn("History","job-history","tiny",'data-id="'+j.id+'" aria-label="History for '+esc(j.company)+'"')+btn("Stage","stage","tiny",'data-id="'+j.id+'" aria-label="Update stage for '+esc(j.company)+'"')+(targets[j.id]?btn("Build CV","cv-job","tiny",'data-id="'+j.id+'"'):"")+'</div></article>';
+}
+function renderJobs(){
+ const query=state.jobQuery.toLowerCase();
+ const jobs=state.jobs.filter(j=>(state.showClosed||j.status!=="closed")&&(!query||(j.company+" "+j.role).toLowerCase().includes(query)));
+ const buckets=[["Saved",["saved","prep"]],["Applied",["applied","screen"]],["Interview",["interview"]],["Outcome",["offer","closed"]]];
+ return heading("Your job search","Track applications, update stages and keep the history.")+
+ '<div class="toolbar"><label class="search">'+icon("search")+'<span class="visually-hidden">Search jobs</span><input type="text" id="job-search" placeholder="Company or role" value="'+esc(state.jobQuery)+'"></label><div class="row gap6">'+btn(state.jobLayout==="board"?"List":"Board","toggle-layout")+btn(state.showClosed?"Hide closed":"Show closed","toggle-closed")+'</div></div>'+
+ (state.jobLayout==="board"?'<div class="board">'+buckets.map(([name,statuses])=>{const subset=jobs.filter(j=>statuses.includes(j.status));return '<section class="column"><div class="colhead">'+name+'<span class="count">'+subset.length+'</span></div>'+subset.map(jobCard).join("")+(subset.length?"":'<p class="hint">Nothing here yet</p>')+'</section>'}).join("")+'</div>':'<div class="listjobs">'+(jobs.map(jobCard).join("")||'<div class="empty">No jobs match your search.</div>')+'</div>');
+}
+function renderExperience(){
+ const pending=state.sources.filter(s=>!s.hidden&&s.status==="Needs review").length;
+ const sourceCount=state.sources.filter(s=>s.type==="cv").length;
+ const master=state.experienceTab==="master";
+ const counts='<div class="row gap6 wrap mt mb">'+chip(sourceCount+" CV sources")+chip(stories.filter(s=>s.approved).length+" confirmed stories","green")+(pending?chip(pending+" import to review","amber"):"")+(profile.linkedin?chip("LinkedIn linked"):"")+'</div>';
+ return heading("Profile &amp; Experience","Your complete career record, built from every source and ready to edit.",btn(master?"Edit":icon("plus")+" Add story",master?"edit-master":"new-story",master?"primary":""))+
+ (master?counts:'<section class="profile"><div class="row spread wrap"><div class="row"><div class="avatar">'+esc(profile.name.split(/\s+/).map(n=>n[0]).slice(0,2).join(""))+'</div><div><h3>'+esc(profile.name)+'</h3><p class="small muted">'+esc(profile.headline)+' · '+esc(profile.location)+'</p></div></div>'+btn("Edit profile","edit-profile","tiny")+'</div>'+counts+'</section>')+
+ '<div class="toolbar"><div class="row gap6 wrap">'+btn("Master CV","experience-tab",master?"primary":"",'data-id="master"')+btn("Sources","experience-tab",state.experienceTab==="sources"?"primary":"",'data-id="sources"')+btn("Stories","experience-tab",state.experienceTab==="stories"?"primary":"",'data-id="stories"')+'</div><span class="hint">Sources → review → full profile</span></div>'+
+ (master?renderMasterCV():state.experienceTab==="sources"?renderSources():renderStoryLibrary());
+}
+function renderMasterStory(story){
+ return '<section class="master-story" data-master-story="'+story.id+'"><div class="row spread wrap"><h4>'+esc(story.title)+'</h4>'+btn("Edit","edit-story","tiny",'data-id="'+story.id+'" aria-label="Edit '+esc(story.title)+'"')+'</div><dl>'+[["Situation",story.context],["Task",story.task],["Personal contribution",story.action],["Result",story.result]].filter(([,value])=>value).map(([label,value])=>'<dt>'+label+'</dt><dd>'+esc(value)+'</dd>').join("")+'</dl>'+(story.bullet?'<p class="master-source"><strong>Base CV wording:</strong> '+esc(story.bullet)+'</p>':"")+'<p class="master-source">Source: '+esc(story.source)+'</p></section>';
+}
+function renderMasterCV(){
+ const confirmed=stories.filter(story=>story.approved),drafts=stories.filter(story=>!story.approved);
+ const details=[["Education",profile.education],["Certifications",profile.certifications],["Languages",profile.languages],["Additional details",profile.additional],...(profile.sections||[]).map(section=>[section.title,section.body])].filter(([,value])=>value&&value.trim());
+ return '<article class="surface master-cv" aria-label="Full master CV"><header class="master-header"><div class="row spread wrap mb"><span class="eyebrow">Master CV</span>'+chip("Full career record","green")+'</div><h2>'+esc(profile.name)+'</h2><p class="small mt">'+esc(profile.headline)+'</p><p class="master-contact">'+esc([profile.location,profile.email,profile.linkedin].filter(Boolean).join(" · "))+'</p></header>'+
+ '<section class="master-section"><h3>Professional profile</h3><p class="master-prose">'+esc(profile.summary||"Add your professional summary with Edit.")+'</p></section>'+
+ (profile.skills?'<section class="master-section"><h3>Skills &amp; expertise</h3><div class="row wrap gap6 master-skill-list">'+profile.skills.split(/\n|,/).map(skill=>skill.trim()).filter(Boolean).map(skill=>'<span class="tag">'+esc(skill)+'</span>').join("")+'</div></section>':"")+
+ '<section class="master-section"><div class="row spread wrap"><h3>Professional experience</h3>'+btn(icon("plus")+" Add experience","new-story","tiny")+'</div>'+
+ (confirmed.length?groupsFor(confirmed).map(([,items])=>'<section class="master-employment"><h3>'+esc(items[0].role)+' · '+esc(items[0].company)+'</h3><p class="period">'+esc(items[0].period)+'</p>'+items.map(renderMasterStory).join("")+'</section>').join(""):'<p class="master-prose muted">Add an experience or review imported stories to build your career history.</p>')+'</section>'+
+ details.map(([title,body])=>'<section class="master-section"><h3>'+esc(title)+'</h3><p class="master-prose">'+esc(body)+'</p></section>').join("")+
+ '<section class="master-section"><div class="row spread wrap"><h3>More about your background</h3>'+btn("Edit","edit-master","tiny",'aria-label="Edit education and additional CV sections"')+'</div><p class="hint mt">Add education, certifications, languages or your own sections with Edit.</p></section>'+
+ (drafts.length?'<section class="master-section"><div class="row spread wrap"><h3>Drafts awaiting review</h3>'+chip(drafts.length+" unconfirmed","amber")+'</div><p class="hint mt">These records stay visible for review and are excluded from the confirmed work history.</p>'+drafts.map(renderMasterStory).join("")+'</section>':"")+'</article>';
+}
+function renderSources(){
+ return '<section class="dropzone surface soft" id="cv-dropzone"><div class="row spread wrap"><div><h3>Bring all your CVs</h3><p class="small muted mt">Drop several versions here, even if they target different roles.</p></div>'+btn(icon("doc")+" Upload CVs","upload-cvs","primary")+'</div><input class="visually-hidden" type="file" id="cv-files" aria-label="Upload multiple CVs" multiple accept=".pdf,.docx,.txt,.md"><p class="hint mt">PDF, DOCX or text · up to 10 MB each. Original sources stay separate; reviewed facts build one profile.</p></section>'+
+ '<div class="row spread wrap mt mb"><h3>Profile sources</h3>'+btn("Add LinkedIn","add-linkedin")+'</div><div class="source-grid">'+state.sources.map(s=>'<article class="source-card"><div class="row spread wrap">'+chip(sourceLabel(s))+chip(s.status,s.status==="Reviewed"?"green":s.status==="Needs review"?"amber":"")+'</div><h3>'+esc(s.name)+'</h3><p class="hint">'+esc(s.note||"Original source retained for review.")+'</p>'+btn(s.status==="Needs review"?"Review import":s.status==="Awaiting extraction"?"View source":"Review source","review-source","tiny mt",'data-id="'+s.id+'"')+'</article>').join("")+'</div>'+
+ '<p class="hint mt">PDF, DOCX and text are extracted locally. Review facts before merging. LinkedIn supports pasted profile text or an uploaded export.</p>';
+}
+function renderStoryLibrary(){
+ const visible=stories.filter(s=>state.filter==="all"||(state.filter==="approved"?s.approved:!s.approved));
+ return '<div class="toolbar"><div class="row gap6 wrap">'+[["all","All"],["approved","Confirmed"],["draft","Needs review"]].map(([id,title])=>btn(title,"story-filter",state.filter===id?"primary":"",'data-id="'+id+'"')).join("")+'</div><span class="hint">'+visible.length+' stories</span></div><div class="stack">'+visible.map(s=>'<article class="story"><div class="row spread wrap"><span class="eyebrow">'+esc(s.company||"Employer not reviewed")+' · '+esc(s.period)+'</span>'+chip(s.approved?"Confirmed":"Needs confirmation",s.approved?"green":"amber")+'</div><div class="row spread mt"><h3>'+esc(s.title)+'</h3>'+btn("Edit","edit-story","tiny",'data-id="'+s.id+'" aria-label="Edit '+esc(s.title)+'"')+'</div><p>'+esc(s.bullet||s.action)+'</p><div class="row gap6 wrap">'+s.tags.map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+chip((s.sourceIds||[]).length+" sources")+'</div><details><summary>Full story and sources</summary><dl><dt>Situation</dt><dd>'+esc(s.context)+'</dd><dt>Task</dt><dd>'+esc(s.task)+'</dd><dt>Action</dt><dd>'+esc(s.action)+'</dd><dt>Result</dt><dd>'+esc(s.result)+'</dd><dt>Source</dt><dd>'+esc(s.source)+'</dd></dl></details></article>').join("")+'</div>';
+}
+function machineReview(selection){
+ const short=selection.length>0&&selection.every(validCompact);
+ const must=target().requirements.filter(r=>r.level==="Must-have");
+ const full=must.filter(r=>r.story&&state.selected.has(r.story)&&!r.partial).length;
+ const gaps=target().requirements.filter(r=>!r.story||!state.selected.has(r.story));
+ return '<section class="machine-review surface"><div class="row spread wrap"><h3>'+icon("check")+' ATS &amp; AI screening</h3>'+btn("Read as plain text","preview-text","tiny")+'</div><p class="small muted mt">Make your CV easy to parse and your relevant experience easy to identify.</p><div class="screening-grid mt"><div><strong>Readable structure</strong><p>One column, clear headings and text-based content.</p></div><div><strong>'+(short?"Concise achievement bullets":"Review achievement bullets")+'</strong><p>One sentence preferred. Two sentences maximum per story.</p></div><div><strong>Evidence-backed role language</strong><p>'+full+' of '+must.length+' must-have criteria supported; partial evidence stays labelled.</p></div></div>'+(gaps.length?'<p class="hint mt">Review gaps: '+esc(gaps.map(r=>r.title).join(", "))+'. Add a term only when your experience supports it.</p>':"")+'<p class="hint mt">These checks support readability and relevance. Employer systems and criteria vary; this is not a hiring score.</p></section>';
+}
+function renderBuilder(){
+ const t=target(),selection=picked(),versions=state.versions.filter(v=>v.target===state.target);
+ return heading("CV Builder","Choose relevant experience, then shape it into short, specific achievement bullets.")+
+ '<div class="toolbar resume-tools"><label class="field"><span class="visually-hidden">Target job</span><select id="target-select">'+Object.entries(targets).map(([id,t])=>'<option value="'+id+'" '+(id===state.target?"selected":"")+'>'+esc(t.company+" · "+t.role)+'</option>').join("")+'</select></label><div class="row gap6">'+chip("EN")+btn("Save version","save-version","primary",selection.length&&selection.every(validCompact)?"":'disabled')+'</div></div>'+
+ machineReview(selection)+
+ '<div class="resume-layout mt"><div><details class="requirements-fold"><summary>Job requirements and evidence</summary>'+t.requirements.map(r=>{const s=stories.find(s=>s.id===r.story),matched=s&&state.selected.has(s.id);return '<div class="requirement"><div class="row spread wrap"><h3>'+esc(r.title)+'</h3><span class="eyebrow" style="font-size:8px">'+r.level+'</span></div><p class="quote">'+esc(r.quote)+'</p><div class="coverage '+(matched&&!r.partial?"":"gap")+'">'+(matched?r.partial?esc(r.note):"Supported by selected experience":s?"Relevant story not selected":"No confirmed story")+'</div></div>'}).join("")+'</details><p class="sectionlabel mt">Select concise stories</p><p class="hint mb">Full STAR stories stay in Profile &amp; Experience. Each CV entry uses one sentence, or two at most.</p>'+
+ stories.map(s=>'<div class="compact-story"><label class="pick '+(s.approved&&validCompact(s)?"":"disabled")+'"><input type="checkbox" data-story="'+s.id+'" '+(state.selected.has(s.id)&&s.approved?"checked ":"")+(s.approved&&validCompact(s)?"":"disabled")+'><span><strong>'+esc(compact(s)||s.title)+'</strong><small>'+esc(s.company)+' · '+esc(s.approved?s.tags.join(" / "):"Confirm in Profile & Experience first")+'</small></span></label>'+btn(s.approved?"Edit wording":"Review full story",s.approved?"edit-cv-wording":"edit-story","tiny quiet",'data-id="'+s.id+'"')+'</div>').join("")+'</div><div><div class="row spread mb"><p class="sectionlabel" style="margin:0">CV preview</p>'+chip("Draft")+'</div>'+renderPaper(selection,t)+
+ '<p class="hint mt">Reference numbers open the full source story. They are omitted from the final CV.</p><section class="surface mt"><p class="sectionlabel">Saved versions</p>'+(versions.length?versions.map(v=>'<div class="version"><div><p>'+esc(v.label)+'</p><small>'+(v.sent?"Recorded as sent":"Fixed snapshot")+'</small></div>'+btn("Open","open-version","tiny",'data-id="'+v.id+'"')+'</div>').join(""):'<p class="hint">Review the draft, then save a version.</p>')+(versions.length?btn("Record submission","record-submission","mt"):"")+'</section></div></div>';
+}
+function renderPaper(selection,t){
+ return '<article class="paper" aria-label="CV preview"><div class="resume-name">'+esc(profile.name)+'</div><div class="resume-title">Target role: '+esc(t.role)+'</div><div class="resume-contact">'+esc(profile.location)+' · '+esc(profile.email)+'</div><h3>Profile</h3><p>'+esc(profile.headline)+(selection.length?" with experience in "+esc(Array.from(new Set(selection.map(s=>s.focus).filter(Boolean))).join(", ")):"")+'.</p><h3>Experience</h3>'+(selection.length?groupsFor(selection).map(([key,items])=>'<div class="employment">'+esc(items[0].company)+' · '+esc(items[0].role)+'</div><div class="period">'+esc(items[0].period)+'</div><ul>'+items.map((s)=>'<li>'+esc(compact(s))+'<button class="source-link" data-action="source" data-id="'+s.id+'" aria-label="Source for '+esc(s.title)+'">['+(stories.indexOf(s)+1)+']</button></li>').join("")+'</ul>').join(""):'<p class="muted">Select confirmed stories to build your CV.</p>')+'</article>';
+}
+function renderPrep(){
+ const q=questions[state.prepQuestion],s=stories.find(s=>s.id===q.story);
+ return heading("Interview prep","Northstar · Leadership interview · Nov 12, 14:00 CET",btn(icon("plus")+" Add interview case","new-case"))+
+ '<div class="feature"><div class="row spread wrap">'+chip("Practice question","green")+'<span class="small muted">'+(state.prepQuestion+1)+' / '+questions.length+'</span></div><h2 style="font-size:22px">'+esc(q.title)+'</h2><p>'+esc(q.hint)+'</p>'+btn("Next question "+icon("arrow"),"next-question")+'</div>'+
+ '<div class="two mt"><section class="surface"><h3>Story for your answer</h3><p class="small muted mt">'+esc(s.title)+'</p>'+[["S","Situation",s.context],["T","Task",s.task],["A","Action",s.action],["R","Result",s.result]].map(([letter,label,text])=>'<div class="star"><span class="letter">'+letter+'</span><div><p class="eyebrow">'+label+'</p><p>'+esc(text)+'</p></div></div>').join("")+btn("Edit case &amp; add to Profile &amp; Experience","case-to-experience","mt",'data-id="'+s.id+'"')+'<p class="hint mt">Review your case, add a short CV version, and keep it in your shared profile.</p></section><div class="stack"><section class="surface"><h3>Questions for the company</h3><p class="small mt">What would success in this role look like after six months?</p><p class="small mt">Which decisions belong to this role, and which belong to team leads?</p></section><section class="surface"><h3>My notes</h3><label class="field mt"><span class="visually-hidden">Interview prep note</span><textarea id="prep-note" placeholder="What to clarify, which example to expand…">'+esc(state.prepNote)+'</textarea></label>'+btn("Save note","save-prep","mt")+(state.savedNotes.length?'<p class="hint mt">Notes saved: '+state.savedNotes.length+'. Available in application history.</p>':"")+'</section></div></div>';
+}
+let toastTimer;
+function toast(text){$("#toast").textContent=text;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("#toast").textContent="",4500)}
+function openModal(title,body){const modal=$("#modal");if(modal.open)modal.close();modal.innerHTML=btn(icon("close"),"close-modal","quiet tiny modal-close",'aria-label="Close dialog"')+'<h2 id="modal-title">'+esc(title)+'</h2>'+body;modal.showModal()}
+function textModal(title,text,sub=""){openModal(title,'<p class="hint mb">'+esc(sub)+'</p><label class="field"><span class="visually-hidden">Document text</span><textarea class="document" id="document-text" readonly>'+esc(text)+'</textarea></label><div class="row mt">'+btn("Select all text","select-text")+btn("Close","close-modal","quiet")+'</div>')}
+function inputField(label,name,value="",required=false){return '<label class="field">'+label+'<input type="text" name="'+name+'" value="'+esc(value)+'" '+(required?"required ":"")+'maxlength="500"></label>'}
+function textField(label,name,value="",required=false){return '<label class="field">'+label+'<textarea name="'+name+'" '+(required?"required ":"")+'maxlength="4000">'+esc(value)+'</textarea></label>'}
+function sectionEditor(section){
+ return '<section class="master-edit-section" data-master-section="'+esc(section.id)+'">'+inputField("Section title","section-title",section.title,true)+textField("Section content","section-body",section.body,true)+btn("Remove section","remove-master-section","tiny quiet",'data-id="'+esc(section.id)+'"')+'</section>';
+}
+function openMasterEditor(){
+ openModal("Edit master CV",'<p class="hint mb">Add or update your full profile and any extra CV sections. Use Add experience or the Edit buttons on work entries to edit career details.</p><form id="profile-form">'+inputField("Full name","name",profile.name,true)+inputField("Professional headline","headline",profile.headline,true)+'<div class="two">'+inputField("Location","location",profile.location)+inputField("Email","email",profile.email)+'</div>'+textField("Professional summary","summary",profile.summary)+textField("Skills & expertise · one per line","skills",profile.skills)+textField("Education","education",profile.education)+textField("Certifications","certifications",profile.certifications)+textField("Languages","languages",profile.languages)+textField("Additional details","additional",profile.additional)+'<p class="sectionlabel mt">Your own sections</p><div id="master-sections">'+(profile.sections||[]).map(sectionEditor).join("")+'</div>'+btn(icon("plus")+" Add section","add-master-section")+'<button class="btn primary" type="submit">Save master CV</button></form>');
+}
+function openStoryForm(story,options={}){
+ const s=story||{},isCase=!!options.caseId;
+ openModal(isCase?"Save interview case to Profile & Experience":s.id?"Edit experience":"Add experience",'<p class="hint mb">Keep the full story here and a concise, truthful version for your CV.</p><form id="story-form" data-id="'+esc(options.editId||s.id||"")+'" data-source="'+esc(options.sourceId||"")+'" data-case="'+esc(options.caseId||"")+'" data-return="'+esc(state.view)+'" data-return-tab="'+esc(state.experienceTab)+'">'+inputField("Story title","title",s.title,true)+'<div class="two">'+inputField("Company","company",s.company,true)+inputField("Role","role",s.role,true)+'</div>'+inputField("Dates","period",s.period,true)+textField("Situation","context",s.context)+textField("Task","task",s.task)+textField("Your personal contribution","action",s.action,true)+textField("Result","result",s.result)+textField("Short CV version · 1 sentence preferred, 2 maximum","bullet",s.bullet)+inputField("Competency / focus","focus",s.focus)+'<label class="row small"><input type="checkbox" name="confirmed" '+(s.approved?"checked":"")+'> I confirm the facts and the scope of my contribution</label><p class="hint">Confirm a story and add a short CV version to make it available in CV Builder.</p><button class="btn primary" type="submit">'+(isCase?"Save to Profile &amp; Experience":"Save experience")+'</button></form>');
+}
+function showHistory(job){
+ const versions=state.versions.filter(v=>v.target===job.id);
+ openModal("History · "+job.company,'<ol class="timeline mt">'+job.events.slice().reverse().map(e=>'<li><small>'+esc(e.at)+'</small>'+esc(e.text)+'</li>').join("")+'</ol><div class="row wrap mt">'+btn("Add event","add-event","",'data-id="'+job.id+'"')+btn("Update stage","stage","",'data-id="'+job.id+'"')+'</div>'+(versions.length?'<p class="sectionlabel mt">CV versions</p>'+versions.map(v=>'<div class="version"><span class="small">'+esc(v.label)+'</span>'+btn("Open","open-version","tiny",'data-id="'+v.id+'"')+'</div>').join(""):""));
+}
+function reviewSource(source){
+ let body='<div class="row wrap mb">'+chip(sourceLabel(source))+chip(source.status)+'</div>';
+ if(source.conflict){
+  body+='<form id="merge-form" data-id="'+source.id+'"><section class="merge-conflict"><p class="sectionlabel">Resolve a date conflict</p><p class="small">Meridian · Head of Data Analytics</p><label class="field mt">Employment dates<select name="period"><option value="current">Keep current: '+esc(profile.meridianPeriod)+'</option><option value="imported">Use imported: 2020–2026</option></select></label><p class="hint mt">Both source values stay in the history. Your choice updates the shared profile.</p></section><p class="sectionlabel mt">Additional story found</p><label class="pick"><input type="checkbox" name="include-story" checked><span><strong>'+esc(source.pendingStory.bullet)+'</strong><small>Meridian · stakeholder alignment</small></span></label><p class="hint">Saving confirms the selected story. Unchanged duplicates are linked to their sources, not added twice.</p><button class="btn primary" type="submit">Merge reviewed items</button></form>';
+ }else if(source.text){
+  body+='<p class="hint mb">Review the source text before adding facts to your shared profile.</p><label class="field">Original text<textarea readonly class="source-text">'+esc(source.text)+'</textarea></label>'+btn("Review excerpt as a story","source-to-story","mt",'data-id="'+source.id+'"');
+ }else if(source.status==="Awaiting extraction"){
+  body+='<p class="small">The file is added to your source collection. PDF/DOCX extraction is illustrated in this prototype.</p><p class="hint mt">Upload a text copy to try reviewing your own content, or review the sample ML leadership CV to try merging and resolving conflicts.</p>';
+ }else if(source.status==="Fetch pending"){
+  body+='<p class="small">'+esc(source.url)+'</p><p class="hint mt">Add profile text or upload a profile export to review the information.</p>'+btn("Add profile text","edit-linkedin","mt",'data-id="'+source.id+'"');
+ }else{
+  const related=stories.filter(s=>(s.sourceIds||[]).includes(source.id));
+  body+='<p class="hint mb">Reviewed information is linked to the shared profile. Overlapping facts are kept once.</p>'+related.map(s=>'<div class="version"><span class="small">'+esc(s.title)+'</span>'+btn("Edit","edit-story","tiny",'data-id="'+s.id+'"')+'</div>').join("");
+ }
+ openModal(source.name,body);
+}
+function openLinkedIn(source){
+ openModal("Add LinkedIn",'<p class="hint mb">Use your profile as another source for the same shared profile.</p><form id="linkedin-form" data-id="'+esc(source?source.id:"")+'">'+inputField("LinkedIn profile URL","url",source?source.url:"",true)+textField("Profile text · optional","text",source?source.text:"")+'<p class="hint">Paste your profile text or upload a saved profile export. A LinkedIn URL alone does not provide your full career history.</p><button class="btn primary" type="submit">Add profile source</button></form>');
+}
+async function saveVersion(){
+ const selection=picked();if(!selection.length||!selection.every(validCompact))return;if(!profile.name||!profile.headline){toast("Add your name and professional headline in Profile & Experience before saving a CV.");return;}
+ const number=Math.max(0,...state.versions.filter(v=>v.target===state.target).map(v=>v.number))+1;
+ state.versions.push({id:uid("version"),number,target:state.target,label:"v"+number+" · saved just now",text:cvText(),layout:JSON.parse(JSON.stringify(state.cvTemplate||{style:"classic"})),stories:JSON.parse(JSON.stringify(selection)),sent:false});await persistNow();render();toast("CV v"+number+" saved. Later edits will not change it.");
+}
+function event(job,text){if(job)job.events.push({at:new Date().toLocaleString("en-GB"),text})}
+async function importCVs(files){
+ let added=0;
+ for(const file of Array.from(files).slice(0,10)){
+  if(file.size>10*1024*1024){toast("File exceeds 10 MB: "+file.name);continue}
+  const ext=file.name.split(".").pop().toLowerCase();if(!["pdf","docx","txt","md"].includes(ext)){toast("Unsupported CV format: "+file.name);continue}
+  const fingerprint=file.name+":"+file.size+":"+file.lastModified;
+  if(state.sources.some(s=>s.fingerprint===fingerprint))continue;
+  const source={id:uid("source"),type:"cv",name:file.name,status:"Awaiting extraction",note:"Original file added",storyIds:[],fingerprint};
+  if(["txt","md"].includes(ext)){
+   try{source.text=await file.text();if(source.text.length>200000){source.text="";source.status="Needs smaller text";source.note="Text exceeds the prototype review limit."}else{source.status="Needs review";source.note="Text ready for review"}}catch(error){source.status="Read failed";source.note="Try adding the source again."}
+  }
+  state.sources.push(source);added++;
+ }
+ state.view="stories";state.experienceTab="sources";render();toast(added?added+" CV sources added. Review before merging.":"No new CV sources added.");
+}
+/* CAREER_ADDON */
+document.addEventListener("click",async e=>{
+ const view=e.target.closest("[data-view]");if(view){go(view.dataset.view);return}
+ const el=e.target.closest("[data-action]");if(!el)return;
+ const id=el.dataset.id,action=el.dataset.action,job=state.jobs.find(j=>j.id===id),story=stories.find(s=>s.id===id),source=state.sources.find(s=>s.id===id);
+ if(action==="close-modal"){$("#modal").close();return}
+ if(action==="cv-job"){state.target=id;go("resume");return}
+ if(action==="job-history"){showHistory(job);return}
+ if(action==="toggle-layout"){state.jobLayout=state.jobLayout==="board"?"list":"board";render();return}
+ if(action==="toggle-closed"){state.showClosed=!state.showClosed;render();return}
+ if(action==="experience-tab"){state.experienceTab=id;render();return}
+ if(action==="story-filter"){state.filter=id;render();return}
+ if(action==="upload-cvs"){$("#cv-files").click();return}
+ if(action==="add-linkedin"){openLinkedIn();return}
+ if(action==="edit-linkedin"){openLinkedIn(source);return}
+ if(action==="review-source"){reviewSource(source);return}
+ if(action==="source-to-story"){openStoryForm({title:"Imported experience",context:source.text,action:source.text,bullet:"",approved:false},{sourceId:source.id});return}
+ if(action==="new-story"){openStoryForm();return}
+ if(action==="edit-story"){openStoryForm(story);return}
+ if(action==="edit-cv-wording"){openModal("CV wording · "+target().company,'<p class="hint mb">For '+esc(target().role)+'. Keep the facts, metrics and personal responsibility unchanged.</p><form id="cv-wording-form" data-id="'+id+'" data-target="'+state.target+'">'+textField("CV achievement · 1 sentence preferred, 2 maximum","bullet",compact(story),true)+'<p class="hint">This wording applies to this target job. The full Experience story stays unchanged.</p><button class="btn primary" type="submit">Save CV wording</button></form>');return}
+ if(action==="edit-profile"||action==="edit-master"){openMasterEditor();return}
+ if(action==="add-master-section"){const section={id:uid("section"),title:"",body:""};$("#master-sections").insertAdjacentHTML("beforeend",sectionEditor(section));$("#master-sections").lastElementChild.querySelector("input").focus();return}
+ if(action==="remove-master-section"){const section=Array.from($("#master-sections").children).find(section=>section.dataset.masterSection===id);if(section)section.remove();return}
+ if(action==="new-case"){openStoryForm(null,{caseId:uid("case")});return}
+ if(action==="case-to-experience"){openStoryForm(story,{editId:story.id,caseId:"case-"+id});return}
+ if(action==="next-question"){state.prepQuestion=(state.prepQuestion+1)%questions.length;render();return}
+ if(action==="save-prep"){const text=state.prepNote.trim();if(!text){toast("Add a note first.");return}state.savedNotes.push(text);event(prepJob(),"Interview prep: "+text);state.prepNote="";try{await persistNow()}catch(error){toast(String(error.message||error));return}render();toast("Note saved to interview prep and application history.");return}
+ if(action==="save-version"){try{await saveVersion()}catch(error){toast(String(error.message||error))}return}
+ if(action==="preview-text"){textModal("Plain-text CV · "+target().company,cvText(),"Review headings, reading order, dates and concise achievements as text. Final PDF extraction still needs verification.");return}
+ if(action==="open-version"){const v=state.versions.find(v=>v.id===id);textModal(targets[v.target].company+" · "+v.label,v.text,"Saved snapshot. Changes to your profile or stories do not alter this version.");return}
+ if(action==="select-text"){$("#document-text").focus();$("#document-text").select();return}
+ if(action==="source"){openModal(story.title,'<p class="small muted mb">'+esc(story.company+" · "+story.period)+'</p><p class="sectionlabel">Personal contribution</p><p class="small mb">'+esc(story.action)+'</p><p class="sectionlabel">Result</p><p class="small mb">'+esc(story.result)+'</p><p class="sectionlabel">Sources</p><p class="hint">'+esc(story.source)+'</p>'+btn("Edit full story","edit-story","mt",'data-id="'+story.id+'"'));return}
+ if(action==="new-job"){openJobPaste();return}
+ if(action==="add-event"){openModal("Add event · "+job.company,'<form id="event-form" data-job="'+id+'">'+textField("What happened","text","",true)+'<p class="hint">This adds to the history. Update the stage separately.</p><button class="btn primary" type="submit">Add to history</button></form>');return}
+ if(action==="stage"){openModal("Stage · "+job.company,'<form id="stage-form" data-job="'+id+'"><label class="field">Current stage<select name="stage" id="stage-select">'+Object.entries(statusNames).map(([value,label])=>'<option value="'+value+'" '+(job.status===value?"selected":"")+'>'+label+'</option>').join("")+'</select></label><label class="field" id="outcome-field" '+(job.status==="closed"?"":"hidden")+'>Outcome<select name="outcome">'+["Rejected by company","Withdrawn by candidate","Position closed","Offer accepted","Offer declined"].map(value=>'<option '+(job.outcome===value?"selected":"")+'>'+value+'</option>').join("")+'</select></label>'+inputField("Next step","next",job.next)+'<button class="btn primary" type="submit">Save stage</button></form>');return}
+ if(action==="record-submission"){
+  const versions=state.versions.filter(v=>v.target===state.target);
+  openModal("Record submission · "+target().company,'<p class="hint mb">Record the CV version you already sent.</p><form id="submission-form"><label class="field">CV version<select name="version">'+versions.slice().reverse().map(v=>'<option value="'+v.id+'">'+esc(v.label)+'</option>').join("")+'</select></label>'+inputField("Channel","channel","",true)+'<label class="row small"><input type="checkbox" required> This version has already been sent</label><button class="btn primary" type="submit">Log submission</button></form>');return
+ }
+});
+document.addEventListener("input",e=>{
+ if(e.target.id==="prep-note")state.prepNote=e.target.value;
+ if(e.target.name==="bullet")e.target.setCustomValidity("");
+ if(e.target.id==="job-search"){const value=e.target.value,position=e.target.selectionStart;state.jobQuery=value;render();const input=$("#job-search");input.focus();input.setSelectionRange(position,position)}
+});
+document.addEventListener("change",e=>{
+ if(e.target.id==="cv-files"){importCVs(e.target.files);return}
+ if(e.target.dataset.story){e.target.checked?state.selected.add(e.target.dataset.story):state.selected.delete(e.target.dataset.story);render();void persistNow().catch(error=>toast(String(error.message||error)))}
+ if(e.target.id==="target-select"){state.selections[state.target]=Array.from(state.selected);state.target=e.target.value;state.selected=new Set(state.selections[state.target]||[]);render()}
+ if(e.target.id==="stage-select")$("#outcome-field").hidden=e.target.value!=="closed";
+});
+document.addEventListener("dragover",e=>{if(e.target.closest("#cv-dropzone"))e.preventDefault()});
+document.addEventListener("drop",e=>{if(e.target.closest("#cv-dropzone")){e.preventDefault();importCVs(e.dataTransfer.files)}});
+document.addEventListener("submit",async e=>{
+ const form=e.target,validForms=["story-form","event-form","stage-form","submission-form","profile-form","linkedin-form","merge-form","cv-wording-form"];
+ if(!validForms.includes(form.id))return;
+ e.preventDefault();const data=new FormData(form),read=key=>String(data.get(key)||"").trim();
+ if(form.id==="profile-form"){["name","headline","location","email","summary","skills","education","certifications","languages","additional"].forEach(k=>profile[k]=read(k));profile.sections=Array.from(form.querySelectorAll("[data-master-section]")).map(section=>({id:section.dataset.masterSection,title:section.querySelector('[name="section-title"]').value.trim(),body:section.querySelector('[name="section-body"]').value.trim()}))}
+ if(form.id==="cv-wording-form"){const bullet=read("bullet");if(sentenceCount(bullet)>2){const field=form.elements.bullet;field.setCustomValidity("Use one sentence, or two at most, for the CV version.");field.reportValidity();return}(state.cvWording[form.dataset.target]||(state.cvWording[form.dataset.target]={}))[form.dataset.id]=bullet}
+ if(form.id==="linkedin-form"){
+  let url;try{url=new URL(read("url"));if(url.protocol!=="https:"||!(url.hostname==="linkedin.com"||url.hostname.endsWith(".linkedin.com"))||!url.pathname.startsWith("/in/"))throw new Error()}catch(error){toast("Enter an HTTPS LinkedIn profile URL, such as linkedin.com/in/your-name.");return}
+  let source=state.sources.find(s=>s.id===form.dataset.id||s.url===url.href);
+  if(!source){source={id:uid("linkedin"),type:"linkedin",name:"LinkedIn profile",storyIds:[]};state.sources.push(source)}
+  Object.assign(source,{url:url.href,text:read("text"),status:read("text")?"Needs review":"Fetch pending",note:read("text")?"Profile text ready for review":"Profile URL saved; fetch pending"});profile.linkedin=url.href;state.view="stories";state.experienceTab="sources";
+ }
+ if(form.id==="merge-form"){
+  const source=state.sources.find(s=>s.id===form.dataset.id);
+  if(read("period")==="imported"){profile.meridianPeriod="2020–2026";stories.filter(s=>s.company==="Meridian"&&s.role==="Head of Data Analytics").forEach(s=>s.period=profile.meridianPeriod)}
+  if(data.has("include-story")){
+   const candidate=JSON.parse(JSON.stringify(source.pendingStory));
+   const match=stories.find(s=>s.bullet.toLowerCase().trim()===candidate.bullet.toLowerCase().trim());
+   if(match){match.sourceIds=Array.from(new Set([...(match.sourceIds||[]),source.id]))}else{candidate.id=uid("story");candidate.period=profile.meridianPeriod;candidate.approved=true;stories.push(candidate)}
+  }
+  source.conflict=false;source.pendingStory=null;source.status="Reviewed";source.note="Import reviewed; duplicates linked and date conflict resolved.";
+ }
+ if(form.id==="story-form"){
+  const approved=data.has("confirmed"),bullet=read("bullet");
+  if((approved&&!bullet)||sentenceCount(bullet)>2){const field=form.elements.bullet;field.setCustomValidity(approved&&!bullet?"Add a short CV version before confirming.":"Use one sentence, or two at most, for the CV version.");field.reportValidity();return}
+  const original=stories.find(s=>s.id===form.dataset.id),sourceId=form.dataset.source,caseId=form.dataset.case;
+  const previousTags=original?(original.tags||[]).filter(tag=>tag!=="Needs review"):[];
+  const values={title:read("title"),company:read("company"),role:read("role"),period:read("period"),context:read("context"),task:read("task"),action:read("action"),result:read("result"),bullet,focus:read("focus"),approved,tags:approved?(previousTags.length?previousTags:read("focus")?[read("focus")]:["Confirmed experience"]):["Needs review"]};
+  let story=original;
+  if(story){Object.assign(story,values)}else{story={id:uid("story"),source:caseId?prepSourceName():sourceId?state.sources.find(s=>s.id===sourceId).name:"Manual entry",sourceIds:sourceId?[sourceId]:[]};Object.assign(story,values);stories.push(story)}
+  if(!original&&!sourceId&&!caseId){const manual={id:uid("manual-source"),type:"manual",name:"Manual entry · "+story.title,status:approved?"Reviewed":"Needs review",note:"Entered directly in Experience",storyIds:[story.id]};state.sources.push(manual);story.sourceIds=[manual.id]}
+  if(sourceId){story.sourceIds=Array.from(new Set([...(story.sourceIds||[]),sourceId]));const source=state.sources.find(s=>s.id===sourceId);source.status="Reviewed";source.note="Reviewed experience linked to the profile.";delete source.proposal}
+  if(caseId){let source=state.sources.find(s=>s.caseId===caseId);if(!source){source={id:uid("prep-source"),type:"prep",caseId,name:"Interview case · "+story.title,status:"Reviewed",note:prepSourceName(),storyIds:[story.id]};state.sources.push(source)}story.sourceIds=Array.from(new Set([...(story.sourceIds||[]),source.id]));if(!story.source.includes(prepSourceName()))story.source=prepSourceName()+"; "+story.source;state.caseLinks[caseId]=story.id;state.view="stories";state.experienceTab="stories"}
+  else if(form.dataset.return!=="resume"){state.view="stories";state.experienceTab=form.dataset.returnTab==="master"?"master":"stories"}
+  state.sources.filter(source=>["manual","prep"].includes(source.type)&&(source.storyIds||[]).includes(story.id)).forEach(source=>source.status=approved?"Reviewed":"Needs review");
+  if(!approved)state.selected.delete(story.id);
+ }
+ if(form.id==="event-form"){event(state.jobs.find(j=>j.id===form.dataset.job),read("text"))}
+ if(form.id==="stage-form"){const job=state.jobs.find(j=>j.id===form.dataset.job),old=job.status;job.status=read("stage");job.outcome=job.status==="closed"?read("outcome"):"";job.next=job.status==="closed"?job.outcome:read("next");event(job,"Stage: "+statusNames[old]+" → "+statusNames[job.status]+(job.outcome?". Outcome: "+job.outcome:""));if(["applied","screen","interview","offer"].includes(job.status))job.applied=true}
+ if(form.id==="submission-form"){const version=state.versions.find(v=>v.id===read("version")),job=state.jobs.find(j=>j.id===version.target);version.sent=true;job.applied=true;if(["saved","prep"].includes(job.status)){job.status="applied";job.next="Wait for a response"}event(job,"Recorded submission of CV v"+version.number+". Channel: "+read("channel")+".")}
+ if(form.dataset.proposalSource){const source=state.sources.find(s=>s.id===form.dataset.proposalSource);source.status="Reviewed";delete source.proposal}try{await persistNow();$("#modal").close();render();toast("Saved in BB.")}catch(error){toast(String(error.message||error))}
+});
+$("#screen").innerHTML="<p class=hint>Connecting to Career Hub…</p>";</script>
+</body>
+</html>
